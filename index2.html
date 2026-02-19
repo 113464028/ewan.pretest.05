@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EWAN | 能量覺醒 - 品牌活動網站</title>
+    <style>
+        :root {
+            --primary: #F5C400; /* 電光黃 */
+            --bg: #0B0B0F;      /* 深邃黑 */
+            --surface: #1A1A1F; /* 區塊深灰 */
+            --white: #FFFFFF;
+            --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --shadow: 4px 4px 0px #000;
+            --glitch-shadow: -3px -3px 0px #F5C400, 3px 3px 0px #000;
+            --accent-red: #FF0000; /* 亮紅色 */
+        }
+
+        /* 基礎樣式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--white);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 背景裝飾：斜紋 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                linear-gradient(45deg, rgba(245, 196, 0, 0.03) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(245, 196, 0, 0.03) 25%, transparent 25%);
+            background-size: 60px 60px;
+            z-index: -1;
+        }
+
+        /* 容器與區塊控制 */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: none;
+        }
+
+        .container.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 品牌 Logo 容器 */
+        .logo-wrapper {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 10px 0;
+            filter: drop-shadow(0 0 20px rgba(245, 196, 0, 0.6));
+        }
+
+        .brand-logo-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .hero-tagline {
+            background: var(--primary);
+            color: var(--bg);
+            display: inline-block;
+            padding: 4px 16px;
+            font-weight: 800;
+            transform: skew(-15deg);
+            margin-top: -15px;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 40px 0 20px 0;
+            position: relative;
+        }
+
+        /* 卡片設計 */
+        .card {
+            background: var(--surface);
+            border: 2px solid var(--primary);
+            padding: 25px;
+            margin-bottom: 25px;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 92%, 95% 100%, 0 100%);
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+
+        .bullet-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .bullet-item::before {
+            content: "⚡";
+            color: var(--primary);
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* 按鈕設計 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            background: var(--primary);
+            color: var(--bg);
+            text-decoration: none;
+            text-align: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: 3px solid #000;
+            box-shadow: var(--shadow);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: visible;
+        }
+
+        .btn:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0px #000;
+            filter: brightness(1.1);
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px #000;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+
+        /* 情境按鈕網格 */
+        .scene-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .scene-btn {
+            padding: 15px;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            letter-spacing: -0.02em;
+        }
+
+        /* 問卷按鈕特殊樣式 */
+        .survey-btn {
+            margin-top: 60px; /* 首頁依然保持 60px 以區隔列表 */
+            background: var(--white);
+            color: var(--bg);
+            border-color: var(--primary);
+        }
+
+        /* 子頁面中取消 survey-btn 的額外 margin-top */
+        #scene-detail .survey-btn {
+            margin-top: 0;
+        }
+
+        .survey-btn::before {
+            content: "FINAL STEP";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) skew(-10deg);
+            background: var(--accent-red);
+            color: #fff;
+            font-size: 12px;
+            padding: 4px 15px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            box-shadow: 3px 3px 0px #000;
+            animation: pulse-glow 1.5s infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: translateX(-50%) skew(-10deg) scale(1); filter: brightness(1); }
+            50% { transform: translateX(-50%) skew(-10deg) scale(1.05); filter: brightness(1.2); box-shadow: 0px 0px 15px var(--accent-red); }
+            100% { transform: translateX(-50%) skew(-10deg) scale(1); filter: brightness(1); }
+        }
+
+        .scene-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 20px 0;
+            color: #DDD;
+            white-space: pre-wrap; /* 保持文案中的換行 */
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--primary);
+            margin: 20px 0;
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divider {
+            height: 6px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--primary),
+                var(--primary) 15px,
+                transparent 15px,
+                transparent 30px
+            );
+            margin: 30px 0;
+        }
+
+        h3 {
+            margin: 30px 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+            color: var(--primary);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 主頁 -->
+    <section id="home" class="container active">
+        <header class="hero-section">
+            <div class="logo-wrapper">
+                <img id="ewanLogo" src="https://drive.google.com/thumbnail?id=1mW6lxw4I-rjJF-EYUhqYWsnsT1Iotd-N&sz=w1000" alt="EWAN Logo" class="brand-logo-img">
+            </div>
+            <p class="hero-tagline">ENERGY AWAKENING</p>
+            <div class="divider"></div>
+        </header>
+
+        <article class="card">
+            <h2>品牌任務</h2>
+            <p>EWAN 是一個專為年輕族群打造的機能飲料品牌，主打在高負荷的日常生活情境中，提供即時的能量補充。當專注被拉長、節奏加快、狀態逐漸消耗時，EWAN 以瞬間覺醒的能量意象，陪你撐過每一個關鍵時刻。</p>
+            <p style="margin-top: 15px;">接下來，你將透過一系列擴增實境互動體驗，在不同生活情境中逐步認識 EWAN。</p>
+            <p style="margin-top: 15px;">每一次互動的操作方式皆相同，但所呈現的情境脈絡與視覺元素將有所差異。請依照畫面指示，依序完成情境一至情境十的體驗，並於全部互動結束後，填寫主頁最下方之問卷。</p>
+            <div style="margin-top: 25px;">
+                <div class="bullet-item">即時能量補充意象</div>
+                <div class="bullet-item">情境化 AR 濾鏡互動</div>
+                <div class="bullet-item">多重生活狀態體驗</div>
+            </div>
+        </article>
+
+        <h3>請依序完成情境一至情境十</h3>
+        <div class="scene-grid" id="sceneGrid"></div>
+
+        <a href="https://forms.gle/MYuthV8Zuh3hH7aN7" id="surveyBtnLink" target="_blank" class="btn survey-btn">填寫問卷</a>
+    </section>
+
+    <!-- 情境詳情頁 -->
+    <section id="scene-detail" class="container">
+        <a href="javascript:void(0)" onclick="showPage('home')" class="back-link">← BACK TO HOME</a>
+        
+        <div class="card">
+            <h2 id="sceneTitle">載入中...</h2>
+            <div class="scene-content" id="sceneBody">準備進入能量覺醒狀態...</div>
+        </div>
+
+        <a href="#" id="snapLink" target="_blank" class="btn" style="background: #FFFC00; color: #000; border: 3px solid #000;">⚡ 開啟 SNAPCHAT 濾鏡</a>
+        
+        <!-- 下一個挑戰按鈕 -->
+        <a href="javascript:void(0)" id="nextSceneBtn" class="btn btn-outline">✨NEXT CHALLENGE →</a>
+
+        <!-- 體驗已足夠按鈕 -->
+        <a href="https://forms.gle/MYuthV8Zuh3hH7aN7" id="skipToSurveyBtn" target="_blank" class="btn btn-outline">⚠️ 體驗已足夠 前往填寫問卷</a>
+        
+        <!-- 情境十專屬的問卷按鈕 -->
+        <a href="https://forms.gle/MYuthV8Zuh3hH7aN7" id="finalSurveyBtn" target="_blank" class="btn survey-btn" style="display:none;">填寫問卷</a>
+
+        <!-- 情境十專屬的還想繼續體驗按鈕 -->
+        <a href="javascript:void(0)" id="backToExperienceBtn" onclick="loadRandomScene()" class="btn btn-outline" style="display:none;">⚡️還想繼續體驗</a>
+    </section>
+
+    <script>
+        const config = {
+            surveyUrl: "https://forms.gle/MYuthV8Zuh3hH7aN7",
+            scenes: [
+                { 
+                    id: 1, 
+                    text: "為了準備重要考試，你長時間坐在書桌前苦讀，專注到幾乎忘了時間。日以繼夜地努力讀書，體力跟意志力逐漸被消磨殆盡，疲憊也一點一滴累積。就在這時候EWAN 出現，陪你撐過這段漫長且難熬的備考旅程。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=609af767c314447f965ccbaf7def6bdd&metadata=01" 
+                },
+                { 
+                    id: 2, 
+                    text: "深夜裡，你絞盡腦汁、敲著鍵盤，報告卻遲遲沒有進展，眼看截止時間一點一滴逼近，焦慮的心情不斷放大，專注力也開始下滑，快要撐不住了，EWAN再次出現，這次他會怎麼做呢？\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=ad0ca7bd6818489b92cc097296cd66dd&metadata=01" 
+                },
+                { 
+                    id: 3, 
+                    text: "大學畢業之際，除了讀書，接踵而來的是求職壓力，還有父母的期望。履歷一改再改，面試跑了一間又一間的公司，卻始終等不到回音，腦中思緒不斷被焦慮、自我懷疑等情緒佔據，難道這就是長大的必經過程嗎？沒關係，別急著否定自己，還有EWAN給你勇氣，陪你面對人生迷惘時刻。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=fb0a2079ca7b45fc9cbdac3846829bfa&metadata=01" 
+                },
+                { 
+                    id: 4, 
+                    text: "工作不只壓力大，腦袋還要切換許多事情，感覺快被榨乾。明明才剛開完會，下一秒又得處理主管回信、修改簡報，沒喘口氣，就要立刻進入另一個專案，注意力變得越來越難集中。但你知道嗎？這不是你的問題，而是你太習慣一個人撐過這些忙碌。EWAN默默陪你一起完成眼前的進度。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=12a45ff486694f24bd70e241e4de175d&metadata=01" 
+                },
+                { 
+                    id: 5, 
+                    text: "明明下班時間已經過了，腦袋卻永遠沒辦法關機，訊息還是一則一則跳出來，每一個紅點彷彿都在催促你回覆客戶，不是你不想休息，而是你不敢停。EWAN在你忙碌的空檔，幫你找回一點節奏、一些能量，繼續向前行。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=c5a75aaad8204a93827af02242efce42&metadata=01" 
+                },
+                { 
+                    id: 6, 
+                    text: "結束一天的工作後，你選擇去運動，讓身體換個節奏。疲勞還沒散去，動作卻已經開始進行，跑步的步伐還沒穩定，腦袋裡還是塞滿工作訊息、待辦事項。你試著透過運動轉換情緒，卻還是提不起勁。沒關係，喘個氣，休息一下，讓EWAN陪你，重新找回屬於自己的生活節奏。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=adbf300ebdd04a518a84dd31a4da5313&metadata=01" 
+                },
+                { 
+                    id: 7, 
+                    text: "運動到一半，呼吸變得急促，表情變得猙獰，動作也不自覺地慢了下來，身體正在努力適應強度的變化。不過，腦袋其實也閃過想放棄的念頭，但你知道，這正是突破成長的開始。EWAN幫你補充體力，讓你多撐一下。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=947c5da152904ae5b09af4adce017154&metadata=01" 
+                },
+                { 
+                    id: 8, 
+                    text: "結束訓練後，你洗了澡、整理好狀態，與另一半約會，卻因為一點小事起了爭執，原本期待的相處，瞬間變了調，難過、複雜的情緒還來不及整理。這時，EWAN出現，靜靜地陪你，讓你知道有人懂你。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=9a0d8700b28e4fb5b7000d1082c1cf85&metadata=01" 
+                },
+                { 
+                    id: 9, 
+                    text: "一天的行程終於告一段落，眼皮一點一滴沉下來，注意力也早已無法集中，只想好好躺著休息、什麼都不做，外頭不再喧鬧，夜色也顯得格外平靜，而EWAN靜靜待在一旁，陪你一起，走到這段日子的最後。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照，也別忘了前往下一個挑戰，一起完成 EWAN 的全新旅程 。", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=be879b45f7594d14984dd96451b46ce4&metadata=01" 
+                },
+                { 
+                    id: 10, 
+                    text: "從學業、求職再到工作與生活，每個階段，都有不一樣的壓力與挑戰，有時候熬夜準備考試，有時候為了工作忙地焦頭難額，也有那麼幾天你只是想好好與另一半好好約會。這些片段，組成了現在的你，而 EWAN一直都在，陪你走過一段又一段路，拼湊起那些被消耗的日子，也悄悄為你補回了一點點能量。一罐 EWAN，給你一萬能量。\n\n⚡️點擊下方「開啟 Snapchat 濾鏡」，走進專屬 AR 情境，記得拍張照留念！\n⚡️拍完照後，別忘了填寫問卷，和我們分享你的感受，一起完成這趟 AR 互動之旅！", 
+                    snap: "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=08ac1a2cc9a947ce98774d52c99e30a5&metadata=01" 
+                }
+            ]
+        };
+
+        const chineseNums = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        function initApp() {
+            const surveyBtn = document.getElementById('surveyBtnLink');
+            surveyBtn.href = config.surveyUrl;
+
+            const sceneGrid = document.getElementById('sceneGrid');
+            config.scenes.forEach((scene, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'btn scene-btn';
+                btn.innerText = `情境${chineseNums[index]}`;
+                btn.onclick = () => loadScene(scene.id);
+                sceneGrid.appendChild(btn);
+            });
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function loadRandomScene() {
+            const randomId = Math.floor(Math.random() * 9) + 1;
+            loadScene(randomId);
+        }
+
+        function loadScene(id) {
+            const scene = config.scenes.find(s => s.id === id);
+            if (!scene) return;
+
+            document.getElementById('sceneTitle').innerText = `情境${chineseNums[id-1]}`;
+            document.getElementById('sceneBody').innerText = scene.text;
+            document.getElementById('snapLink').href = scene.snap;
+
+            const nextBtn = document.getElementById('nextSceneBtn');
+            const skipBtn = document.getElementById('skipToSurveyBtn');
+            const finalSurveyBtn = document.getElementById('finalSurveyBtn');
+            const backBtn = document.getElementById('backToExperienceBtn');
+
+            skipBtn.href = config.surveyUrl;
+            finalSurveyBtn.href = config.surveyUrl;
+
+            if (id < config.scenes.length) {
+                nextBtn.style.display = 'block';
+                nextBtn.onclick = () => loadScene(id + 1);
+                skipBtn.style.display = 'block';
+                finalSurveyBtn.style.display = 'none';
+                backBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'none';
+                skipBtn.style.display = 'none';
+                finalSurveyBtn.style.display = 'block';
+                backBtn.style.display = 'block';
+            }
+            showPage('scene-detail');
+        }
+
+        window.onpopstate = () => showPage('home');
+    </script>
+</body>
+</html>
